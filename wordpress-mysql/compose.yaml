@@ -3,7 +3,7 @@ services:
     image: mariadb:10.6.4-focal
     command: '--default-authentication-plugin=mysql_native_password'
     volumes:
-      - ./db_data:/var/lib/mysql
+      - ./db_data:/var/lib/mysql          # <-- bind mount (host folder)
     restart: always
     environment:
       - MYSQL_ROOT_PASSWORD=somewordpress
@@ -16,7 +16,7 @@ services:
     depends_on:
       - db
     ports:
-      - "80:80"     # or "8080:80" in PWD
+      - "80:80"                           # use "8080:80" on PWD if needed
     restart: always
     environment:
       - WORDPRESS_DB_HOST=db
@@ -24,4 +24,8 @@ services:
       - WORDPRESS_DB_PASSWORD=wordpress
       - WORDPRESS_DB_NAME=wordpress
     volumes:
-      - ./wp_content:/var/www/html/wp-content
+      - ./wp_content:/var/www/html/wp-content   # <-- bind mount
+
+# ⛔️ REMOVE this if present:
+# volumes:
+#   db_data:
